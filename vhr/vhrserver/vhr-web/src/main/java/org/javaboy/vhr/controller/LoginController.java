@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 /**
  * @作者 江南一点雨
@@ -34,6 +35,6 @@ public class LoginController {
         String text = code.getText();
         HttpSession session = request.getSession(true);
         session.setAttribute("verify_code", text);
-        VerificationCode.output(image,resp.getOutputStream());
+        VerificationCode.output(image, resp.getOutputStream());
     }
 }

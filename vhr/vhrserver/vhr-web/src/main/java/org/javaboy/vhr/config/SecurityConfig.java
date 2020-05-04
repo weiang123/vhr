@@ -59,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**","/js/**","/index.html","/img/**","/fonts/**","/favicon.ico","/verifyCode");
+        web.ignoring().antMatchers("/css/**","/js/**","/i2.html","/index.html","/img/**","/fonts/**","/favicon.ico","/verifyCode","/files/**");
+        web.ignoring().antMatchers("/","/open/**","/vhrstatic/**");
+        web.ignoring().antMatchers("/system/config/open/menu");
     }
 
     @Bean
@@ -102,13 +104,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
         loginFilter.setAuthenticationManager(authenticationManagerBean());
+        System.out.println("未登录");
         loginFilter.setFilterProcessesUrl("/doLogin");
         return loginFilter;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.cors().and().authorizeRequests()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O object) {
@@ -141,7 +144,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 PrintWriter out = resp.getWriter();
                 RespBean respBean = RespBean.error("访问失败!");
                 if (authException instanceof InsufficientAuthenticationException) {
-                    respBean.setMsg("请求失败，请联系管理员!");
+                    respBean.setMsg("请求失败，请联系管理员爸爸!");
                 }
                 out.write(new ObjectMapper().writeValueAsString(respBean));
                 out.flush();
