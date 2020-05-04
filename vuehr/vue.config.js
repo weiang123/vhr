@@ -13,8 +13,12 @@ proxyObj['/'] = {
     }
 }
 module.exports = {
+    publicPath: './',
+    assetsDir: 'vhrstatic',
+    productionSourceMap: false,
     devServer: {
-        host: 'localhost',
+        open: true,
+        host: '0.0.0.0',
         port: 8080,
         proxy: proxyObj
     },

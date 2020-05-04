@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import './role.js'
+
 import {
     Button,
     Input,
@@ -49,7 +51,9 @@ import {
     CollapseItem,
     Switch
 } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
+// import './assets/css/theme-green/index.css'; // 浅绿色主题
+import './assets/css/icon.css';
 
 Vue.prototype.$ELEMENT = {size: 'small', zIndex: 3000};
 Vue.use(Switch);
@@ -95,15 +99,21 @@ Vue.use(Icon);
 Vue.use(Select);
 Vue.use(Form);
 Vue.use(Tag);
+
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
 Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$notify = Notification;
+Vue.prototype.$message = Message;
 
 import {postRequest} from "./utils/api";
 import {postKeyValueRequest} from "./utils/api";
 import {putRequest} from "./utils/api";
 import {deleteRequest} from "./utils/api";
 import {getRequest} from "./utils/api";
-import {initMenu} from "./utils/menus";
 import 'font-awesome/css/font-awesome.min.css'
 
 Vue.prototype.postRequest = postRequest;
@@ -114,18 +124,6 @@ Vue.prototype.getRequest = getRequest;
 
 Vue.config.productionTip = false
 
-router.beforeEach((to, from, next) => {
-    if (to.path == '/') {
-        next();
-    } else {
-        if (window.sessionStorage.getItem("user")) {
-            initMenu(router, store);
-            next();
-        } else {
-            next('/?redirect=' + to.path);
-        }
-    }
-})
 
 new Vue({
     router,

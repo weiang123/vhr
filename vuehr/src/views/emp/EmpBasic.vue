@@ -317,7 +317,7 @@
                 :visible.sync="dialogVisible"
                 width="80%">
             <div>
-                <el-form :model="emp" :rules="rules" ref="empForm">
+                <el-form :model="emp" :rules="rules" ref="empForm" labelPosition="left">
                     <el-row>
                         <el-col :span="6">
                             <el-form-item label="姓名:" prop="name">
@@ -327,7 +327,7 @@
                         </el-col>
                         <el-col :span="5">
                             <el-form-item label="性别:" prop="gender">
-                                <el-radio-group v-model="emp.gender">
+                                <el-radio-group v-model="emp.gender" class="emp-gender-radio">
                                     <el-radio label="男">男</el-radio>
                                     <el-radio label="女">女</el-radio>
                                 </el-radio-group>
@@ -550,6 +550,7 @@
                 </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
+    <el-button @click="clearEmpForm">清</el-button>
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="doAddEmp">确 定</el-button>
   </span>
@@ -686,6 +687,10 @@
             this.initPositions();
         },
         methods: {
+            clearEmpForm(){
+                this.emptyEmp();
+                this.$refs['empForm'].clearValidate();
+            },
             searvhViewHandleNodeClick(data) {
                 this.inputDepName = data.name;
                 this.searchValue.departmentId = data.id;
@@ -928,5 +933,9 @@
     {
         transform: translateX(10px);
         opacity: 0;
+    }
+
+    .emp-gender-radio{
+        margin: 0.5rem 0rem;
     }
 </style>

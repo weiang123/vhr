@@ -1,7 +1,10 @@
 import axios from 'axios'
 import {Message} from 'element-ui';
 import router from '../router'
-
+axios.interceptors.request.use(config => {
+    // console.log(config)
+    return config;
+})
 axios.interceptors.response.use(success => {
     if (success.status && success.status == 200 && success.data.status == 500) {
         Message.error({message: success.data.msg})
