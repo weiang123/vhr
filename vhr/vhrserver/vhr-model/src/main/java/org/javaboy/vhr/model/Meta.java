@@ -16,6 +16,27 @@ public class Meta implements Serializable {
 
     private Boolean requireAuth;
 
+    private String pgTitle;
+
+    private Integer contentType;
+
+
+    public String getPgTitle() {
+        return pgTitle;
+    }
+
+    public Integer getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
+    }
+
+    public void setPgTitle(String pgTitle) {
+        this.pgTitle = pgTitle;
+    }
+
     public Boolean getKeepAlive() {
         return keepAlive;
     }

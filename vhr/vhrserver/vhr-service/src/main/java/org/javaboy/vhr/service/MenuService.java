@@ -1,5 +1,6 @@
 package org.javaboy.vhr.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.javaboy.vhr.mapper.MenuMapper;
 import org.javaboy.vhr.mapper.MenuRoleMapper;
 import org.javaboy.vhr.model.Hr;
@@ -12,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,8 +33,46 @@ public class MenuService {
     MenuMapper menuMapper;
     @Autowired
     MenuRoleMapper menuRoleMapper;
+
+    private ArrayList<Menu> openMenus = new ArrayList<Menu>();
+    private List<Menu> allOpenMenus = new ArrayList<Menu>();
+
     public List<Menu> getMenusByHrId() {
         return menuMapper.getMenusByHrId(((Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
+    }
+
+    public List<Menu> getAllOpenMenus() {
+        openMenus = new ArrayList<Menu>();
+        allOpenMenus = menuMapper.getAllOpenMenus();
+        //找出所有父菜单
+        for (int i = allOpenMenus.size() - 1; i >= 0; i--) {
+            Menu aParentMenu = allOpenMenus.get(i);
+            if (aParentMenu.getParentId() == null){
+                openMenus.add(aParentMenu);
+                allOpenMenus.remove(i);
+            }
+        }
+        //递归下去设置子菜单
+        for (int i = openMenus.size() - 1; i >= 0; i--) {
+            setChildenMenu(openMenus.get(i));
+        }
+        Collections.reverse(openMenus);
+        System.out.println("请求了一次open路由菜单");
+        System.out.println(allOpenMenus.size());
+        System.out.println();
+        return openMenus;
+    }
+
+    private void setChildenMenu(Menu menu) {
+        ArrayList<Menu> childenList = new ArrayList<>();
+        for (int i = allOpenMenus.size() - 1; i >= 0; i--) {
+            if (allOpenMenus.get(i).getParentId().intValue() == menu.getId().intValue()){
+                childenList.add(allOpenMenus.get(i));
+                setChildenMenu(allOpenMenus.get(i));
+                menu.setChildren(childenList);
+                allOpenMenus.remove(i);
+            }
+        }
     }
 
     @Cacheable

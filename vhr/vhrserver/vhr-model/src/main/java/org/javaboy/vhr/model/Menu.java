@@ -19,10 +19,37 @@ public class Menu implements Serializable {
     private Meta meta;
 
     private Integer parentId;
+    private Boolean hidden;
+    private String picurl1;
+    private String picurl2;
 
     private Boolean enabled;
     private List<Menu> children;
     private List<Role> roles;
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    public String getPicurl1() {
+        return picurl1;
+    }
+
+    public void setPicurl1(String picurl1) {
+        this.picurl1 = picurl1;
+    }
+
+    public String getPicurl2() {
+        return picurl2;
+    }
+
+    public void setPicurl2(String picurl2) {
+        this.picurl2 = picurl2;
+    }
 
     public List<Role> getRoles() {
         return roles;
